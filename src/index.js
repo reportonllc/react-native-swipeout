@@ -98,7 +98,7 @@ const SwipeoutBtn = createReactClass({
 const Swipeout = createReactClass({
   mixins: [tweenState.Mixin],
 
-   swipeoutContentRef: React.createRef(),
+  
 
   propTypes: {
     autoClose: PropTypes.bool,
@@ -141,6 +141,7 @@ const Swipeout = createReactClass({
   },
 
   componentWillMount: function () {
+    this.swipeoutContentRef = React.createRef();
     this._panResponder = PanResponder.create({
       onStartShouldSetPanResponder: (event, gestureState) => true,
       onStartShouldSetPanResponderCapture: (event, gestureState) =>
@@ -170,7 +171,11 @@ const Swipeout = createReactClass({
     } else {
       this._callOnClose();
     }
-    this.swipeoutContentRef.current.measure((ox, oy, width, height) => {
+
+    const node = this.swipeoutContentRef.current;
+    if (!node) return;
+
+    node.measure((ox, oy, width, height) => {
       let buttonWidth = this.props.buttonWidth || (width / 5);
       this.setState({
         btnWidth: buttonWidth,
@@ -305,7 +310,11 @@ const Swipeout = createReactClass({
   },
 
   _openRight: function () {
-    this.swipeoutContentRef.current.measure((ox, oy, width, height) => {
+    const node = this.swipeoutContentRef.current;
+    if (!node) return;
+
+
+    node.measure((ox, oy, width, height) => {
       let btnWidth = this.props.buttonWidth || (width / 5);
 
       this.setState({
@@ -325,7 +334,11 @@ const Swipeout = createReactClass({
   },
 
   _openLeft: function () {
-    this.swipeoutContentRef.current.measure((ox, oy, width, height) => {
+
+    const node = this.swipeoutContentRef.current;
+    if (!node) return;
+
+    node.measure((ox, oy, width, height) => {
       let btnWidth = this.props.buttonWidth || (width / 5);
 
       this.setState({
@@ -390,7 +403,7 @@ const Swipeout = createReactClass({
     return (
       <View style={styleSwipeout}>
         <View
-          ref={node => this.swipeoutContentRef = node}
+          ref={this.swipeoutContentRef}
           style={styleContent}
           onLayout={this._onLayout}
           {...this._panResponder.panHandlers}

@@ -118,8 +118,6 @@ var Swipeout = (0, _createReactClass2.default)({
 
   mixins: [_reactTweenState2.default.Mixin],
 
-  swipeoutContentRef: _react2.default.createRef(),
-
   propTypes: {
     autoClose: _propTypes2.default.bool,
     backgroundColor: _propTypes2.default.string,
@@ -163,6 +161,7 @@ var Swipeout = (0, _createReactClass2.default)({
   componentWillMount: function componentWillMount() {
     var _this = this;
 
+    this.swipeoutContentRef = _react2.default.createRef();
     this._panResponder = _reactNative.PanResponder.create({
       onStartShouldSetPanResponder: function onStartShouldSetPanResponder(event, gestureState) {
         return true;
@@ -201,7 +200,11 @@ var Swipeout = (0, _createReactClass2.default)({
     } else {
       this._callOnClose();
     }
-    this.swipeoutContentRef.current.measure(function (ox, oy, width, height) {
+
+    var node = this.swipeoutContentRef.current;
+    if (!node) return;
+
+    node.measure(function (ox, oy, width, height) {
       var buttonWidth = _this2.props.buttonWidth || width / 5;
       _this2.setState({
         btnWidth: buttonWidth,
@@ -343,7 +346,10 @@ var Swipeout = (0, _createReactClass2.default)({
   _openRight: function _openRight() {
     var _this3 = this;
 
-    this.swipeoutContentRef.current.measure(function (ox, oy, width, height) {
+    var node = this.swipeoutContentRef.current;
+    if (!node) return;
+
+    node.measure(function (ox, oy, width, height) {
       var btnWidth = _this3.props.buttonWidth || width / 5;
 
       _this3.setState({
@@ -365,7 +371,10 @@ var Swipeout = (0, _createReactClass2.default)({
   _openLeft: function _openLeft() {
     var _this4 = this;
 
-    this.swipeoutContentRef.current.measure(function (ox, oy, width, height) {
+    var node = this.swipeoutContentRef.current;
+    if (!node) return;
+
+    node.measure(function (ox, oy, width, height) {
       var btnWidth = _this4.props.buttonWidth || width / 5;
 
       _this4.setState({
@@ -385,8 +394,6 @@ var Swipeout = (0, _createReactClass2.default)({
   },
 
   render: function render() {
-    var _this5 = this;
-
     var contentWidth = this.state.contentWidth;
     var posX = this.getTweeningValue('contentPos');
 
@@ -435,9 +442,7 @@ var Swipeout = (0, _createReactClass2.default)({
       _react2.default.createElement(
         _reactNative.View,
         _extends({
-          ref: function ref(node) {
-            return _this5.swipeoutContentRef = node;
-          },
+          ref: this.swipeoutContentRef,
           style: styleContent,
           onLayout: this._onLayout
         }, this._panResponder.panHandlers),
@@ -472,7 +477,7 @@ var Swipeout = (0, _createReactClass2.default)({
   },
 
   _renderButton: function _renderButton(btn, i) {
-    var _this6 = this;
+    var _this5 = this;
 
     return _react2.default.createElement(SwipeoutBtn, {
       backgroundColor: btn.backgroundColor,
@@ -482,7 +487,7 @@ var Swipeout = (0, _createReactClass2.default)({
       height: this.state.contentHeight,
       key: i,
       onPress: function onPress() {
-        return _this6._autoClose(btn);
+        return _this5._autoClose(btn);
       },
       text: btn.text,
       type: btn.type,
