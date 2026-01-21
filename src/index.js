@@ -20,8 +20,6 @@ import ViewPropTypes from 'deprecated-react-native-prop-types';
 
 const SwipeoutBtn = createReactClass({
 
-  swipeoutContentRef: React.createRef(),
-
   propTypes: {
     backgroundColor: PropTypes.string,
     color: PropTypes.string,
@@ -99,6 +97,8 @@ const SwipeoutBtn = createReactClass({
 
 const Swipeout = createReactClass({
   mixins: [tweenState.Mixin],
+
+   swipeoutContentRef: React.createRef(),
 
   propTypes: {
     autoClose: PropTypes.bool,
