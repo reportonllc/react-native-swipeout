@@ -14,10 +14,13 @@ import {
   StyleSheet,
   Text,
   View,
-  ViewPropTypes,
 } from 'react-native';
 
+import ViewPropTypes from 'deprecated-react-native-prop-types';
+
 const SwipeoutBtn = createReactClass({
+
+  swipeoutContentRef: React.createRef(),
 
   propTypes: {
     backgroundColor: PropTypes.string,
@@ -167,7 +170,7 @@ const Swipeout = createReactClass({
     } else {
       this._callOnClose();
     }
-    this.swipeoutContent.measure((ox, oy, width, height) => {
+    this.swipeoutContentRef.current.measure((ox, oy, width, height) => {
       let buttonWidth = this.props.buttonWidth || (width / 5);
       this.setState({
         btnWidth: buttonWidth,
@@ -302,7 +305,7 @@ const Swipeout = createReactClass({
   },
 
   _openRight: function () {
-    this.swipeoutContent.measure((ox, oy, width, height) => {
+    this.swipeoutContentRef.current.measure((ox, oy, width, height) => {
       let btnWidth = this.props.buttonWidth || (width / 5);
 
       this.setState({
@@ -322,7 +325,7 @@ const Swipeout = createReactClass({
   },
 
   _openLeft: function () {
-    this.swipeoutContent.measure((ox, oy, width, height) => {
+    this.swipeoutContentRef.current.measure((ox, oy, width, height) => {
       let btnWidth = this.props.buttonWidth || (width / 5);
 
       this.setState({
@@ -387,7 +390,7 @@ const Swipeout = createReactClass({
     return (
       <View style={styleSwipeout}>
         <View
-          ref={node => this.swipeoutContent = node}
+          ref={node => this.swipeoutContentRef = node}
           style={styleContent}
           onLayout={this._onLayout}
           {...this._panResponder.panHandlers}
